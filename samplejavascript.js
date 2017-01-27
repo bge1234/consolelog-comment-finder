@@ -13,6 +13,12 @@ function sampleJs (arg) {
   // Another comment
   // Another comment
 
+  /*
+    Here is a multi-line comment.
+    Another line.
+    And another line.
+  */
+
   return inBetweenCode
 }
 

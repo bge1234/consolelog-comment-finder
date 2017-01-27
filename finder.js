@@ -28,7 +28,7 @@ function findComments (input, filename) {
   var numComments = 0
 
   for (var i = 0; i < arrTokens.length; i++) {
-    if (arrTokens[i].toLowerCase() === '//') {
+    if (arrTokens[i].toLowerCase() === '//' || arrTokens[i].toLowerCase() === '/*') {
       numComments++
     }
   }
