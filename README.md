@@ -1,1 +1,1 @@
-This will find console.log()s and comments in JavaScript that's run through it and call them out so you don't actually push them.
+This function finds any tokens passed to it in an array of strings and prints out the number found to the console.
