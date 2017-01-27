@@ -1,22 +1,85 @@
-function findTokens (filename, tokenToFind) {
-  var fs = require('fs')
+function findTokens (argValues) {
+  var numTokensToFind = argValues[2]
 
-  fs.readFile(filename, 'utf8', function (err, fileContents) {
-    if (err) {
-      return console.log(err)
+  var tokensToFind = []
+  for (var i = 3; i <= (2 + parseInt(numTokensToFind)); i++) {
+    var tokenToPush = ''
+    var j = 0
+    if (argValues[i][0] === '[') {
+      j = 1
     }
 
-    var tokenizedFile = fileContents.split(/[\s,()]+/)
-    var numFound = 0
-
-    for (var j = 0; j < tokenizedFile.length; j++) {
-      if (tokenizedFile[j].toLowerCase() === tokenToFind) {
-        numFound++
-      }
+    for (j; j < argValues[i].length - 1; j++) {
+      tokenToPush += argValues[i][j]
     }
 
-    console.log('\'' + tokenToFind + '\'' + ' found ' + numFound + ' times in ' + filename)
-  })
+    tokensToFind.push(tokenToPush)
+  }
+
+  var filenames = []
+  for (i; i < argValues.length; i++) { // Be careful not to reset i here
+    filenames.push(argValues[i])
+  }
+
+  for (i = 0; i < tokensToFind.length; i++) {
+    for (j = 0; j < filenames.length; j++) {
+      var tokenizedFile = readTheFile(filenames[j])
+      var numFound = count(tokensToFind[i], tokenizedFile)
+
+      output(tokensToFind[i], filenames[j], tokenizedFile, numFound)
+    }
+  }
 }
 
-findTokens(process.argv[2], process.argv[3])
+function readTheFile (filename) {
+  var fs = require('fs')
+  return fs.readFileSync(filename, 'utf8').split(/[\s,()]+/)
+}
+
+function count (tokenToFind, tokenizedFile) {
+  var numFound = 0
+
+  for (var i = 0; i < tokenizedFile.length; i++) {
+    if (tokenizedFile[i].toLowerCase() === tokenToFind) {
+      numFound++
+    }
+  }
+
+  return numFound
+}
+
+function output (tokenToFind, filename, tokenizedFile, numFound) {
+  console.log('\'' + tokenToFind + '\'' + ' found ' + numFound + ' times in ' + filename)
+}
+
+findTokens(process.argv)
+
+function oldFindTokens (argValues) {
+  var tokenToFind = argValues[2]
+  var filename = ''
+  var tokenizedFile = ''
+  var numFound = 0
+
+  if (argValues.length < 4) {
+    console.log('Missing argument(s)')
+  } else if (argValues.length === 4) {
+    filename = argValues[3]
+    tokenizedFile = readTheFile(filename)
+    numFound = count(tokenToFind, tokenizedFile)
+
+    output(tokenToFind, filename, tokenizedFile, numFound)
+  } else {
+    var filenames = []
+    for (var i = 3; i < argValues.length; i++) {
+      filenames.push(argValues[i])
+    }
+
+    for (var j = 0; j < filenames.length; j++) {
+      filename = filenames[j]
+      tokenizedFile = readTheFile(filename)
+      numFound = count(tokenToFind, tokenizedFile)
+
+      output(tokenToFind, filename, tokenizedFile, numFound)
+    }
+  }
+}
