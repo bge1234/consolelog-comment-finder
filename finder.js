@@ -5,35 +5,23 @@ function readFile (filename) {
     if (err) {
       return console.log(err)
     }
-    findConsolelogs(fileData, filename)
-    findComments(fileData, filename)
+    findToken('console.log', fileData, filename)
+    findToken('//', fileData, filename)
+    findToken('/*', fileData, filename)
   })
 }
 
-function findConsolelogs (input, filename) {
+function findToken(token, input, filename) {
   var arrTokens = input.split(/[\s,()]+/)
-  var numLogs = 0
+  var numFound = 0
 
   for (var i = 0; i < arrTokens.length; i++) {
-    if (arrTokens[i].toLowerCase() === 'console.log') {
-      numLogs++
+    if (arrTokens[i].toLowerCase() === token) {
+      numFound++
     }
   }
 
-  console.log(numLogs + ' console.logs found in ' + filename)
-}
-
-function findComments (input, filename) {
-  var arrTokens = input.split(/[\s,()]+/)
-  var numComments = 0
-
-  for (var i = 0; i < arrTokens.length; i++) {
-    if (arrTokens[i].toLowerCase() === '//' || arrTokens[i].toLowerCase() === '/*') {
-      numComments++
-    }
-  }
-
-  console.log(numComments + ' comments found in ' + filename)
+  console.log('\'' + token + '\'' + ' found ' + numFound + ' times in ' + filename)
 }
 
 readFile('samplejavascript.js')
