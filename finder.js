@@ -1,27 +1,25 @@
-function readFile (filename) {
+function findTokens (tokensToFind, filename) {
   var fs = require('fs')
 
-  fs.readFile(filename, 'utf8', function (err, fileData) {
+  fs.readFile(filename, 'utf8', function (err, fileContents) {
     if (err) {
       return console.log(err)
     }
-    findToken('console.log', fileData, filename)
-    findToken('//', fileData, filename)
-    findToken('/*', fileData, filename)
+
+    var tokenizedFile = fileContents.split(/[\s,()]+/)
+
+    for (var i = 0; i < tokensToFind.length; i++) {
+      var numFound = 0
+
+      for (var j = 0; j < tokenizedFile.length; j++) {
+        if (tokenizedFile[j].toLowerCase() === tokensToFind[i]) {
+          numFound++
+        }
+      }
+
+      console.log('\'' + tokensToFind[i] + '\'' + ' found ' + numFound + ' times in ' + filename)
+    }
   })
 }
 
-function findToken(token, input, filename) {
-  var arrTokens = input.split(/[\s,()]+/)
-  var numFound = 0
-
-  for (var i = 0; i < arrTokens.length; i++) {
-    if (arrTokens[i].toLowerCase() === token) {
-      numFound++
-    }
-  }
-
-  console.log('\'' + token + '\'' + ' found ' + numFound + ' times in ' + filename)
-}
-
-readFile('samplejavascript.js')
+findTokens(['console.log', '//', '/*'], 'samplejavascript.js')
