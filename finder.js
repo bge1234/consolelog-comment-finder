@@ -1,4 +1,4 @@
-function findTokens (tokensToFind, filename) {
+function findTokens (filename, tokenToFind) {
   var fs = require('fs')
 
   fs.readFile(filename, 'utf8', function (err, fileContents) {
@@ -7,19 +7,16 @@ function findTokens (tokensToFind, filename) {
     }
 
     var tokenizedFile = fileContents.split(/[\s,()]+/)
+    var numFound = 0
 
-    for (var i = 0; i < tokensToFind.length; i++) {
-      var numFound = 0
-
-      for (var j = 0; j < tokenizedFile.length; j++) {
-        if (tokenizedFile[j].toLowerCase() === tokensToFind[i]) {
-          numFound++
-        }
+    for (var j = 0; j < tokenizedFile.length; j++) {
+      if (tokenizedFile[j].toLowerCase() === tokenToFind) {
+        numFound++
       }
-
-      console.log('\'' + tokensToFind[i] + '\'' + ' found ' + numFound + ' times in ' + filename)
     }
+
+    console.log('\'' + tokenToFind + '\'' + ' found ' + numFound + ' times in ' + filename)
   })
 }
 
-findTokens(['console.log', '//', '/*'], 'samplejavascript.js')
+findTokens(process.argv[2], process.argv[3])
