@@ -6,6 +6,7 @@ function readFile (filename) {
       return console.log(err)
     }
     findConsolelogs(fileData, filename)
+    findComments(fileData, filename)
   })
 }
 
@@ -20,6 +21,19 @@ function findConsolelogs (input, filename) {
   }
 
   console.log(numLogs + ' console.logs found in ' + filename)
+}
+
+function findComments (input, filename) {
+  var arrTokens = input.split(/[\s,()]+/)
+  var numComments = 0
+
+  for (var i = 0; i < arrTokens.length; i++) {
+    if (arrTokens[i].toLowerCase() === '//') {
+      numComments++
+    }
+  }
+
+  console.log(numComments + ' comments found in ' + filename)
 }
 
 readFile('samplejavascript.js')

@@ -10,6 +10,8 @@ function sampleJs (arg) {
   console.log('arg: ', arg)
 
   // Another comment
+  // Another comment
+  // Another comment
 
   return inBetweenCode
 }
