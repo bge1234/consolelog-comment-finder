@@ -53,33 +53,3 @@ function output (tokenToFind, filename, tokenizedFile, numFound) {
 }
 
 findTokens(process.argv)
-
-function oldFindTokens (argValues) {
-  var tokenToFind = argValues[2]
-  var filename = ''
-  var tokenizedFile = ''
-  var numFound = 0
-
-  if (argValues.length < 4) {
-    console.log('Missing argument(s)')
-  } else if (argValues.length === 4) {
-    filename = argValues[3]
-    tokenizedFile = readTheFile(filename)
-    numFound = count(tokenToFind, tokenizedFile)
-
-    output(tokenToFind, filename, tokenizedFile, numFound)
-  } else {
-    var filenames = []
-    for (var i = 3; i < argValues.length; i++) {
-      filenames.push(argValues[i])
-    }
-
-    for (var j = 0; j < filenames.length; j++) {
-      filename = filenames[j]
-      tokenizedFile = readTheFile(filename)
-      numFound = count(tokenToFind, tokenizedFile)
-
-      output(tokenToFind, filename, tokenizedFile, numFound)
-    }
-  }
-}
