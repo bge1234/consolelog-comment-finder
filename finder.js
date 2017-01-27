@@ -9,9 +9,17 @@ function readFile (filename) {
   })
 }
 
-readFile('samplejavascript.js')
+function findConsolelogs (input, filename) {
+  var arrTokens = input.split(/[\s,()]+/)
+  var numLogs = 0
 
-function findConsolelogs(fileData, filename) {
-  console.log('Contents of ' + filename + ':')
-  console.log(fileData)
+  for (var i = 0; i < arrTokens.length; i++) {
+    if (arrTokens[i].toLowerCase() === 'console.log') {
+      numLogs++
+    }
+  }
+
+  console.log(numLogs + ' console.logs found in ' + filename)
 }
+
+readFile('samplejavascript.js')
